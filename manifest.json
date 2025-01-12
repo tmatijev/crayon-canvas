@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Crayon Canvas",
+  "version": "1.0.0",
+  "description": "Convert images to coloring pages",
+  "action": {
+    "default_popup": "index.html"
+  },
+  "permissions": [
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/contentScript.ts"]
+    }
+  ]
+} 

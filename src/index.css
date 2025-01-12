@@ -1,0 +1,22 @@
+:root {
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --background: #fafafa;
+  --text: #1f2937;
+  --error: #ef4444;
+  --success: #22c55e;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text);
+  min-width: 320px;
+  min-height: 100vh;
+}
