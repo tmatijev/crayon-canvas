@@ -1,22 +1,37 @@
 :root {
-  --primary: #6366f1;
-  --primary-dark: #4f46e5;
-  --background: #fafafa;
+  /* Colors */
+  --primary: #4f46e5;
+  --primary-dark: #4338ca;
   --text: #1f2937;
   --error: #ef4444;
   --success: #22c55e;
+  
+  /* Font */
+  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Color scheme */
+  color-scheme: light;
+  color: var(--text);
+  background-color: white;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Space Grotesk', system-ui, sans-serif;
 }
 
 body {
-  background-color: var(--background);
-  color: var(--text);
+  margin: 0;
+  display: flex;
+  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }

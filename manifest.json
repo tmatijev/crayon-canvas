@@ -2,17 +2,31 @@
   "manifest_version": 3,
   "name": "Crayon Canvas",
   "version": "1.0.0",
-  "description": "Convert images to coloring pages",
+  "description": "Convert images into coloring pages with adjustable detail levels. Create printable coloring pages from any photo or artwork.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
   "action": {
-    "default_popup": "index.html"
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
   },
   "permissions": [
     "activeTab"
   ],
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["src/contentScript.ts"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": ["contentScript.js"]
     }
-  ]
+  ],
+  "author": "Tomislav Matijević",
+  "homepage_url": "https://github.com/tmatijev/crayon-canvas"
 } 

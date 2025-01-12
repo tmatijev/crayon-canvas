@@ -6,6 +6,7 @@ interface ImageData {
   width: number
   height: number
   alt: string
+  isBase64?: boolean
 }
 
 function App() {
@@ -16,21 +17,41 @@ function App() {
   const [lineIntensity, setLineIntensity] = useState(0.5) // 0 to 1 range
 
   useEffect(() => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const currentTab = tabs[0]
-      if (currentTab?.id) {
-        chrome.tabs.sendMessage(currentTab.id, { type: 'CHECK_FOR_IMAGE' }, (response) => {
-          setHasImage(!!response?.hasImage)
-          if (response?.hasImage) {
-            chrome.tabs.sendMessage(currentTab.id, { type: 'GET_IMAGES' }, (response) => {
-              if (response?.images) {
-                setImages(response.images)
-                setSelectedImage(response.images[0])
-              }
-            })
-          }
+    chrome.tabs.query({ active: true, currentWindow: true }, async ([currentTab]) => {
+      if (!currentTab?.id) return
+      
+      // Check if current tab is a data URI
+      if (currentTab.url?.startsWith('data:image/')) {
+        setHasImage(true)
+        setSelectedImage({
+          src: currentTab.url,
+          width: 0,
+          height: 0,
+          alt: 'Direct image',
+          isBase64: true
         })
+        setImages([{
+          src: currentTab.url,
+          width: 0,
+          height: 0,
+          alt: 'Direct image',
+          isBase64: true
+        }])
+        return
       }
+      
+      // Otherwise check for images in the page
+      chrome.tabs.sendMessage(currentTab.id, { type: 'CHECK_FOR_IMAGE' }, (response) => {
+        setHasImage(!!response?.hasImage)
+        if (response?.hasImage) {
+          chrome.tabs.sendMessage(currentTab.id!, { type: 'GET_IMAGES' }, (response) => {
+            if (response?.images) {
+              setImages(response.images)
+              setSelectedImage(response.images[0])
+            }
+          })
+        }
+      })
     })
   }, [])
 
@@ -234,7 +255,7 @@ function App() {
     setIsProcessing(true)
     try {
       const canvas = document.createElement('canvas')
-      const ctx = canvas.getContext('2d')
+      const ctx = canvas.getContext('2d', { willReadFrequently: true })
       if (!ctx) throw new Error('Could not get canvas context')
 
       const img = new Image()
@@ -269,7 +290,10 @@ function App() {
 
   return (
     <div className="app">
-      <h1>Crayon Canvas</h1>
+      <div className="header">
+        <img src="/icons/icon48.png" alt="Crayon Canvas Logo" />
+        <h1>Crayon Canvas</h1>
+      </div>
       {!hasImage ? (
         <p className="message">Please open this extension on a page with an image.</p>
       ) : (

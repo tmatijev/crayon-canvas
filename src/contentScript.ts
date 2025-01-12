@@ -11,10 +11,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       src: img.src,
       width: img.width,
       height: img.height,
-      alt: img.alt
+      alt: img.alt,
+      isBase64: img.src.startsWith('data:image/')
     }))
     sendResponse({ images: imageData })
   }
-
+  
   return true
 }) 
